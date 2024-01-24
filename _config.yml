@@ -1,8 +1,8 @@
-title: DentOS documentation
-description: Documentation
-theme: just-the-docs
+plugins:
+  - jekyll-default-layout
 
+title: DENT Documentation
+description: DENT NOS Documentation
+remote_theme: just-the-docs/just-the-docs@v0.5.2
 url: https://docs.dent.dev
-
-aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+logo: ./Images/ImageForOutline/ImageForFrontPage.png
