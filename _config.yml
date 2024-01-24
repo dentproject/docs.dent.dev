@@ -1,9 +1,8 @@
 plugins:
   - jekyll-default-layout
 
-#theme: jekyll-theme-Modernist
 title: DENT Documentation
 description: DENT NOS Documentation
 remote_theme: just-the-docs/just-the-docs@v0.5.2
-url: https:///KorelU.githb.io/Practacing-GitHub-Pages
+url: https://docs.dent.dev
 logo: ./Images/ImageForOutline/ImageForFrontPage.png
