@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c9faeaa0-be7d-4293-8a55-005b22375227" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BasicNetworkConfiguration.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Gemfile.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImageForOutline/ImageForFrontPage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForBasicNetworkConfiguration/DifferentSubNets.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForBasicNetworkConfiguration/SameSubnet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageEightOfLocalUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageEightOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageElevenOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageFiveOfLocalUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageFiveOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageFourOfLocalUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageFourOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageNineOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageOneOfLocalUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageOneOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageSevenOfLocalUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageSevenOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageSixOfLocalUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageSixOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageTenOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageThirteenOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageThreeOfLocalUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageThreeOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageTwelveOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageTwoOfLocalUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/ImagesForGNS3/ImageTwoOfVmUsage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Install the DENT NOS on GNS3.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Install the DENT NOS on GNS3/LocalMachine.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Install the DENT NOS on GNS3/Server.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Install the DENT NOS on GNS3/VirtualMachine.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NetworkConfiguration.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PlatformConfiguraiton.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/dependabot.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/pages.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNAME" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/_config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/index.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2bPTw4ZsJZ1oV4htetwy3nDqsQ2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Clone-of-My-repository",
+    "last_opened_file_path": "C:/Users/korel/CloneDocsDENTdev/docs.dent.dev",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "ruby.rails.projectView.checked": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpringUtil" SPRING_PRE_LOADER_OPTION="true" RAKE_SPRING_PRE_LOADER_OPTION="true" RAILS_SPRING_PRE_LOADER_OPTION="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c9faeaa0-be7d-4293-8a55-005b22375227" name="Changes" comment="" />
+      <created>1706115949729</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1706115949729</updated>
+      <workItem from="1706115950744" duration="668000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
