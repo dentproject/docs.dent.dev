@@ -3,6 +3,4 @@ description: Documentation
 theme: just-the-docs
 
 url: https://docs.dent.dev
-
-aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+logo: ./Images/ImageForOutline/ImageForFrontPage.png
