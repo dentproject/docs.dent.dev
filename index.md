@@ -1,6 +1,7 @@
 ---
 title: DENT NOS
 nav_order: 1
+layout: default
 ---
 
 # DENT NOS

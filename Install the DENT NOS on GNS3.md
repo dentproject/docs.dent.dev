@@ -2,6 +2,7 @@
 title: Install the DENT NOS on GNS3
 nav_order: 2
 has_children: true
+layout: default
 ---
 
 # Install the DENT NOS on GNS3

@@ -1,6 +1,7 @@
 ---
 title: Basic Networking
 nav_order: 3
+layout: default
 ---
 
 # Getting Started With Network Configuration
