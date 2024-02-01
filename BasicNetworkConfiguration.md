@@ -10,17 +10,17 @@ To familiarize yourself with the DENT NOS we designed a
 simple tutorial for you. This tutorial will quickly cover interfaces
 and how to configure a simple network.
 
-
-***
+---
 
 ## **Interfaces**
+
 A network interface is the point of connection between a computer
 and a network. As a system administrator you may want to know the
 available network interfaces in your system to manage network
 configurations.
 
-
 ### Links
+
 The term Link is another name for a network interface. Once you start your DENT NOS
 and login, you may display the available links associated with your machine using
 the following command:
@@ -41,15 +41,16 @@ $ ip link show
 
 Interfaces can be managed using iproute2 or any netlink supported utility.
 
-*Note all the interfaces listed above are ``down``. To utilize a link it must be ``up``.*
+_Note all the interfaces listed above are `down`. To utilize a link it must be `up`._
 
-You may bring a link ``up``using the following command
-``sudo ip link set ${interface name} up``
+You may bring a link `up`using the following command
+`sudo ip link set ${interface name} up`
 
-*Note the output of ``ip link show`` will differ depending on whether
-the port is in use.*
+_Note the output of `ip link show` will differ depending on whether
+the port is in use._
 
 Ex.
+
 ```
 $ ip link set dev enp0s4 up
 [  443.984073] e1000: enp0s4 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
@@ -60,10 +61,10 @@ $ ip link set dev enp0s5 up
 
 ```
 
-In the output above notice that the interface ``enp0s4`` was inuse while ``enp0s5`` was not.
+In the output above notice that the interface `enp0s4` was inuse while `enp0s5` was not.
 
-Rerunning ``ip link show`` will now depict ``enp0s4`` as ``up``
-while ``enp0s5`` will remain unused:
+Rerunning `ip link show` will now depict `enp0s4` as `up`
+while `enp0s5` will remain unused:
 
 ```
 $ ip link show
@@ -79,24 +80,24 @@ $ ip link show
 ...
 ```
 
-To disable a link and bringing it back ``down`` use the following command
-``sudo ip link set ${interface name} down``
+To disable a link and bringing it back `down` use the following command
+`sudo ip link set ${interface name} down`
 
 Ex.
+
 ```
 $ sudo ip link set enp0s4 down
 ```
 
 ### Loopback Interface
 
-The loopback interface `` lo `` is a special type of virtual interface that allows the computer
+The loopback interface `lo` is a special type of virtual interface that allows the computer
 to communicte with itself.
 
-
 The two IP addresses associated with the loopback interface
-are ``127.0.0.1/8`` for IPv4 and ``::1/128`` for IPV6.
+are `127.0.0.1/8` for IPv4 and `::1/128` for IPV6.
 
-***
+---
 
 ## Network Configuraiton
 
@@ -122,13 +123,13 @@ $ ip address show
 To connect machines add an IP address on an interface of your choice using the following
 command:
 
-``` sudo ip address add ${address}/${mask} dev ${interface name}```
+` sudo ip address add ${address}/${mask} dev ${interface name}`
 
 For example run the following command in your DENT NOS:
 
-```ip address add 192.0.2.1/24 dev enp0s4```
+`ip address add 192.0.2.1/24 dev enp0s4`
 
-Rerunning ``ip address show`` will now show that ``enp0s4`` has an ip address linked to it:
+Rerunning `ip address show` will now show that `enp0s4` has an ip address linked to it:
 
 ```
 $ ip address show
@@ -148,7 +149,9 @@ $ ip address show
 
 ...
 ```
-***
+
+---
+
 ## Simple Configuration Example
 
 Imagine the configuration below. We will be using GNS3 to help illustrate
@@ -161,12 +164,13 @@ Assume PC1 has an IP address of 10.1.1.1/24 and an associated gateway
 10.1.2.254/24 Both PCs are connected to a switch running the DENT NOS.
 
 ### Enable Interfaces
+
 The ports which these devices are connected to the switch with will be
 represented by the interfaces on the switch. When logged into the switch
-use ``ip link show`` to view a list of all available interfaces.
-
+use `ip link show` to view a list of all available interfaces.
 
 Ex.
+
 ```
 $ ip link show
 ...
@@ -179,20 +183,20 @@ $ ip link show
 ...
 ```
 
-*Note by default all interfaces will be down. You must enable all interfaces that are
-associated with a port that is in use.*
+_Note by default all interfaces will be down. You must enable all interfaces that are
+associated with a port that is in use._
 
-To enable an interface, use ``ip link set dev ${interface name} up``.
+To enable an interface, use `ip link set dev ${interface name} up`.
 
-In the diagram above PC1 is connected to the port Ethernet7 which corresponds to the interface ``enp0s11`` of the switch.
-PC2 is connected to the port Ethernet0 which corresponds to the interface ``enp0s4`` of the switch.
+In the diagram above PC1 is connected to the port Ethernet7 which corresponds to the interface `enp0s11` of the switch.
+PC2 is connected to the port Ethernet0 which corresponds to the interface `enp0s4` of the switch.
 
 Run the following commands to bring these interfaces up
 
-``$ ip link set dev enp0s11 up``
-``$ ip link set dev enp0s4 up``
+`$ ip link set dev enp0s11 up`
+`$ ip link set dev enp0s4 up`
 
-Once the interfaces are ``up`` you should see something similar to the following:
+Once the interfaces are `up` you should see something similar to the following:
 
 ```
 $ ip link show
@@ -210,40 +214,38 @@ $ ip link show
 ```
 
 ### Add the Gateway Addresses to the Switch
+
 Next add the gateway addresses to your switch on the appropriate interface.
 To add the gateway addresses use the following command
-``ip address add ${address}/${mask} dev ${interface name}``.
+`ip address add ${address}/${mask} dev ${interface name}`.
 
 In the diagram above PC1 is connected to the port Ethernet7 which corresponds to
-the interface ``enp0s11`` of the switch. PC1 will also use the gateway address
+the interface `enp0s11` of the switch. PC1 will also use the gateway address
 10.1.1.254/24. On the switch run the following command to add the gateway address
 for PC1 to the switch:
 
-```ip address add 10.1.1.254/24 dev enp0s11```
-
+`ip address add 10.1.1.254/24 dev enp0s11`
 
 In the diagram above PC2 is connected to the port Ethernet0 which corresponds to
-the interface ``enp0s4`` of the switch. PC2 will also use the gateway address
+the interface `enp0s4` of the switch. PC2 will also use the gateway address
 10.1.2.254/24. On the switch run the following command to add the gateway address
 for PC2 to the switch:
 
-```ip address add 10.1.2.254/24 dev enp0s4```
-
+`ip address add 10.1.2.254/24 dev enp0s4`
 
 You should now be able to ping your PCs to your switch and your switch to your PCs.
 
-*NOTE: Forward packeting must be enabled to ping between the PCs over the switch.*
+_NOTE: Forward packeting must be enabled to ping between the PCs over the switch._
 
 If forward packeting is enabled on your router you should now also be able to ping between the PCs.
-
 
 ### How to enable Forward Packeting
 
 To enable Packet forwarding check on the router to make sure the value
-of the file ``ip_forward`` is "1". To view the contents of the file execute the
+of the file `ip_forward` is "1". To view the contents of the file execute the
 following command:
 
-``cat /proc/sys/net/ipv4/ip_forward``
+`cat /proc/sys/net/ipv4/ip_forward`
 
 If the file content is "0", packet forwarding is disabled.
 To enable packet forwarding the content of the file must be "1".
@@ -251,7 +253,7 @@ To enable packet forwarding the content of the file must be "1".
 Use the following command to write overwrite the contents of the file to
 the value of '1':
 
-``sudo sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward' ``
+`sudo sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward' `
 
 Congratulations!
 You should now be able to ping PC1 and PC2 through your router.
