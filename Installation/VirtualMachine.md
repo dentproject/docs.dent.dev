@@ -1,16 +1,15 @@
 ---
-title: Using a virtual machine to run the DENT NOS in GNS3
-parent: Install the DENT NOS on GNS3
+title: Using a virtual machine
+parent: Installation
 nav_order: 2
 layout: default
 ---
 
-## Using a virtual machine to run the DENT NOS in GNS3
-
+## Using a virtual machine
 
 First, install the DENT GNS3 appliance file as well as the disk
 image for the dent Virtual Machine. You can find the required files
-here:** [DENT Image and gns3a file](https://1drv.ms/f/s!AkTUp6FU_dW0gt4dlXatZOhyr8boog?e=Ltqpa5.)
+here:\*\* [DENT Image and gns3a file](https://1drv.ms/f/s!AkTUp6FU_dW0gt4dlXatZOhyr8boog?e=Ltqpa5.)
 
 ![ImageOneOfVmUsage.png](../Images/ImagesForGNS3/ImageOneOfVmUsage.png)
 
@@ -79,6 +78,7 @@ After Starting the simulation you may right-click on any DENT
 appliance and select _console_ to log-in.
 
 **The default credentials are:**
+
 - **Localhost login: root**
 - **Password: onl**
 
@@ -86,6 +86,4 @@ appliance and select _console_ to log-in.
 
 ### You have now successfully set up DENT in GNS3 with a virtual machine
 
-For more information on how to set up DENT in GNS3 with a virtual
-machine feel free to contact the author Korel Ucpinar at
-Korelucpinar@gmail.com
+For more information, you can visit [dent.dev](https://dent.dev).
