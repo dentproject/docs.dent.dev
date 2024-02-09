@@ -1,7 +1,7 @@
 ---
 title: GNS3 on a virtual machine
-parent: Installation
-nav_order: 3
+parent: DENT with GNS3
+nav_order: 2
 layout: default
 ---
 

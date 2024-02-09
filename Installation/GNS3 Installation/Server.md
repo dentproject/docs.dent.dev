@@ -1,7 +1,7 @@
 ---
 title: GNS3 on a remote server
-parent: Installation
-nav_order: 4
+parent: DENT with GNS3
+nav_order: 3
 layout: default
 ---
 

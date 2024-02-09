@@ -1,7 +1,7 @@
 ---
 title: GNS3 on a local machine
-parent: Installation
-nav_order: 2
+parent: DENT with GNS3
+nav_order: 1
 layout: default
 ---
 

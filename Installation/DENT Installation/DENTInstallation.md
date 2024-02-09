@@ -15,8 +15,8 @@ The DENT NOS build system uses an ONIE-compatible installer.
 This section will describe installing the dentOS using a USB drive and connecting
 to the device using a serial console.
 
-There are several alternative methods for installing with an ONIE
-system using various networking configurations which can also be found here.
+Other alternative methods for installing with an ONIE
+system can also be found here.
 
 Steps:
 
@@ -66,11 +66,11 @@ SF: Detected w25q128bv with page size 256 Bytes, erase size 4 KiB, total 16 MiB
 Type 123<ENTER> to STOP autoboot
 ```
 
-If the device is currently running a non-ONIE OS operating system, we need to trigger
-ONIE environment from U-boot. U-Boot has a set of pre-defined environment variables,
-out of which the mostimportat one is `bootcmd` which is executed during every boot.
-ONIE defines several variables, and more details about that can be found here.
-We can trigger ONIE from U-Boot by seting the `onie_boot_reason` environment variable to
+If the device is currently running a non-ONIE OS operating system, first trigger
+the ONIE environment from U-boot. U-Boot has a set of pre-defined environment variables,
+out of which the most importat one is `bootcmd`.
+
+To trigger ONIE from U-Boot use the `onie_boot_reason` environment variable to
 `install` and run bootcmd afterward.
 
 ```
@@ -83,7 +83,7 @@ SF: Detected w25q128bv with page size 256 Bytes, erase size 4 KiB, total 16 MiB
 device 0 offset 0x400000, size 0xc00000
 ```
 
-The system should now boot into ONIE with Installer Mode Enabled. Expected console output is as follows:
+The system will now boot into ONIE with Installer Mode Enabled. Expected console output is as follows:
 
 ```
 ** Installer Mode Enabled **
@@ -98,5 +98,5 @@ ONIE:/ # down.
 The system should automatically locate the `onie-installer` file on the drive and execute it. After the installer
 is executed, the device should boot into the dentOS environment. The default password for the `root` user is `onl`.
 
-In case there is no pre-installed operating system on the device, powering up the switch will automaticallz boot
-into the ONIE install environment. ONIE will scan the USB drive for the installer file and install DentOS from it.
+In case there is no pre-installed operating system on the device, powering up the switch will automatically boot
+into the ONIE install environment. ONIE will scan the USB drive for the installer file and install the DentOS from it.
