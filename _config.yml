@@ -5,3 +5,5 @@ theme: just-the-docs
 url: https://docs.dent.dev
 logo: ./Images/ImageForOutline/ImageForFrontPage.png
 incremental: true
+
+color_scheme: color
