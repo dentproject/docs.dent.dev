@@ -8,20 +8,21 @@ layout: default
 # DENT Installation
 
 ## Overview
+
 This section will describe the process of installing DENT on a device.
 
 The DENT NOS build system uses an ONIE-compatible installer.
 This section will describe installing the dentOS using a USB drive and connecting
-to the device using a serial console. 
+to the device using a serial console.
 
-There are several alternative methods for installing with an ONIE 
+There are several alternative methods for installing with an ONIE
 system using various networking configurations which can also be found here.
 
 Steps:
 
-1. Download or manually compile the installer image and place it on the USB drive 
-under the name ``onie-installer``
-(we assume that the working directory is the top directory in the local copy of the repository):
+1. Download or manually compile the installer image and place it on the USB drive
+   under the name `onie-installer`
+   (we assume that the working directory is the top directory in the local copy of the repository):
 
 ```
 ~ $ sudo mount /dev/sda /mnt/usb
@@ -30,7 +31,7 @@ under the name ``onie-installer``
 ```
 
 Enter the ONIE environment Power on the device and upon seeing the prompt,
-press ``123<ENTER>`` to stop autoboot and enter 
+press `123<ENTER>` to stop autoboot and enter
 the U-Boot environment. The output should be as follows:
 
 ```
@@ -65,12 +66,12 @@ SF: Detected w25q128bv with page size 256 Bytes, erase size 4 KiB, total 16 MiB
 Type 123<ENTER> to STOP autoboot
 ```
 
-If the device is currently running a non-ONIE OS operating system, we need to trigger 
-ONIE environment from U-boot. U-Boot has a set of pre-defined environment variables, 
-out of which the mostimportat one is ``bootcmd`` which is executed during every boot. 
+If the device is currently running a non-ONIE OS operating system, we need to trigger
+ONIE environment from U-boot. U-Boot has a set of pre-defined environment variables,
+out of which the mostimportat one is `bootcmd` which is executed during every boot.
 ONIE defines several variables, and more details about that can be found here.
-We can trigger ONIE from U-Boot by seting the ``onie_boot_reason`` environment variable to
-``install`` and run bootcmd afterward.
+We can trigger ONIE from U-Boot by seting the `onie_boot_reason` environment variable to
+`install` and run bootcmd afterward.
 
 ```
 Marvell>> setenv onie_boot_reason install
@@ -92,10 +93,10 @@ ONIE:/ # down.
 
 3. Plug in the USB into the device USB port and mount it
 
-``ONIE:/ # mount /dev/sdb1 /mnt/usb/``
+`ONIE:/ # mount /dev/sdb1 /mnt/usb/`
 
-The system should automatically locate the ``onie-installer`` file on the drive and execute it. After the installer
-is executed, the device should boot into the dentOS environment. The default password for the ``root`` user is ``onl``.
+The system should automatically locate the `onie-installer` file on the drive and execute it. After the installer
+is executed, the device should boot into the dentOS environment. The default password for the `root` user is `onl`.
 
-In case there is no pre-installed operating system on the device, powering up the switch will automaticallz boot 
+In case there is no pre-installed operating system on the device, powering up the switch will automaticallz boot
 into the ONIE install environment. ONIE will scan the USB drive for the installer file and install DentOS from it.
