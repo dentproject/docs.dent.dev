@@ -1,7 +1,7 @@
 ---
-title: Using a remote server
+title: GNS3 on a remote server
 parent: Installation
-nav_order: 3
+nav_order: 4
 layout: default
 ---
 
