@@ -1,7 +1,7 @@
 ---
-title: Using a virtual machine
+title: GNS3 on a virtual machine
 parent: Installation
-nav_order: 2
+nav_order: 3
 layout: default
 ---
 

@@ -1,7 +1,7 @@
 ---
-title: Using your local machine
+title: GNS3 on a local machine
 parent: Installation
-nav_order: 1
+nav_order: 2
 layout: default
 ---
 
