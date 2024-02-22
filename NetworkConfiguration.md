@@ -12,7 +12,6 @@ layout: default
 ### Link Aggregation and Load Balancing
 
 - LAG/LACP (Link Aggregation Group/Link Aggregation Control Protocol)
-
 - L2/L3 ECMP (Equal-Cost Multipath)
 
 ### Network Addressing and Filtering

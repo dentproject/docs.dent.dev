@@ -99,7 +99,7 @@ are `127.0.0.1/8` for IPv4 and `::1/128` for IPV6.
 
 ---
 
-## Network Configuraiton
+## Network Configuration
 
 While configuring your network you may need information on device IP addressing
 to enable device communication. To show all addresses use the following command:
