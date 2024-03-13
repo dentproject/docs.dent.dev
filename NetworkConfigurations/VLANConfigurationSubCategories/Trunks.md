@@ -21,7 +21,7 @@ as it builds on itself.
 
 Consider the topology:
 
-![Network Configuration](../../Images/ImagesForNetworkConfiguration/ImageOneForTrunking.png)
+![Network Configuration](../../Images/ImagesForNetworkConfiguration/ImageOneForTrunks.png)
 
 Let's say we wanted to configure PC1 and PC3 to be on VLAN 10
 while PC2 and PC4 would be on VLAN 20. By building a trunk, we
