@@ -67,7 +67,7 @@ where  OBJECT := { qdisc | class | filter | chain |
                      -br[ief] }
 ```
 
-**_Note_**: The `-brief` option is present for DENT Hardware but missing in the case of DENT VM.
+**_Note_**: The `-br[ief]` option is present for DENT Hardware but missing in the case of DENT VM.
 
 Once the qdisc is created, you can add flower rules that are bound to a specific qdisc or switchdev interface. These rules can be defined for software, hardware, or both.
 
@@ -443,8 +443,6 @@ tc filter add dev swp31 ingress proto ip flower src_ip 1.1.1.0/2 action drop hw_
 ```
 
 ```
-src_ip 1.1.1.0/2 action drop hw_stats delayed
-root@dentlab-infra1:~# tc filter show dev swp31 ingress
 filter protocol ip pref 49152 flower chain 0
 filter protocol ip pref 49152 flower chain 0 handle 0x1
   eth_type ipv4
