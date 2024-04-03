@@ -24,9 +24,6 @@ To create a bridge, use the following command:
 $ ip link add name ${Bridge Name} type bridge
 ```
 
-NOTE: Bridges may be configured with VLAN support.
-For more information, visit VLANs (Configuring 802.1q Interfaces)
-
 ### Connecting Interfaces to a Bridge
 
 Once you have created a new bridge, connect interfaces to it
