@@ -74,8 +74,14 @@ $ ip -d link show dev ${Bridge Name}
 The brctl utility can also be used to view information
 about the current configuration.
 
-If the brctl utility is not already installed, use:
-`$ apt-get update` to update the package lists.
+If the brctl utility is not already installed:
+
+_Do not forget to use `$ apt-get update` to
+fetch the latest version of your package lists.
+Follow this with the command `$ apt-get upgrade` to first
+review the changes in the latest versions
+and then replace the old packages by installing the new ones._
+
 Install the brctl utility with: `$ apt-get install bridge-utils`
 
 Use the following to confirm STP is enabled:
