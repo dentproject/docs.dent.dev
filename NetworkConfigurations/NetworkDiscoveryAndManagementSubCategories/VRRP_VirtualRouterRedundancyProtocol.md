@@ -111,7 +111,7 @@ Consider the following topology:
 
 In this example, PC1 is connected to an L2 device (DENT1), which is connected to two L3 devices
 (DENT2 and DENT3). DENT2 will act as the MASTER, and PC1 will communicate with the internet through DENT2.
-We will simulate DENT2 going down, and using keepalived PC1, we will re-establish a connection
+We will simulate DENT2 going down, and using keepalived, PC1 we will re-establish a connection
 to the internet through DENT3.
 
 ### Configure Devices
@@ -263,7 +263,22 @@ $ sudo sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
 
 ### Enable Network Address Translation
 
-Lastly, ensure NAT is enabled on DENT2 and DENT3 by using the following command:
+Since we are attempting to access the internet
+we must be aware that
+the private IP addresses
+with 192.168.1.x are only valid in our Local Area Network (LAN). To ping and get result back
+from the internet we must use a public IP address.
+This is why Network Address Translation (NAT)
+is used here.
+
+**Note, if you are only working within a LAN and not connecting
+to the internet, NAT is not required because the devices can
+communicate using their private IP addresses.**
+
+In this example ma1 acts as the external
+gateway for our LAN to connect to the internet.
+
+To enable NAT on DENT2 and DENT3 use the following command:
 
 ```
 $ iptables -t nat -A POSTROUTING -o ma1 -j MASQUERADE
@@ -272,7 +287,7 @@ $ iptables -t nat -A POSTROUTING -o ma1 -j MASQUERADE
 This command appends a rule to the POSTROUTING
 chain of the nat table that enables masquerading.
 Masquerading is a form of network address translation
-(NAT) that allows multiple devices on a private network
+that allows multiple devices on a private network
 to share a single public IP address for Internet access.
 When a packet exits the network interface ma1, this rule
 masks the source IP address with the IP address of ma1.
