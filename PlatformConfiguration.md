@@ -7,9 +7,4 @@ layout: default
 
 # Platform Configuration
 
-**DENT offers a wide range of Platform Configuration options. These include the following:**
-
-- Port Isolation
-- TC Persistence (Petunia)
-- IEEE 802.1x Port Based Authentication
-- Power over Ethernet (PoE) Management
+DENT offers a wide range of platform configuration options to cater to various networking needs. This section provides an overview of the available configurations and their functionalities.
