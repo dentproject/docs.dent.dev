@@ -2,7 +2,7 @@
 title: IGMP Snooping
 grand_parent: Network Configuration
 parent: Routing and Forwarding
-nav_order: 4
+nav_order: 5
 layout: default
 ---
 
