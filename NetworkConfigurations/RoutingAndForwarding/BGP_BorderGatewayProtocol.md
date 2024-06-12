@@ -45,7 +45,8 @@ For more information regarding configuring BGP outside of this document, visit t
 
 ## Installation of FRR
 
-To install FRR (Free Range Routing) with BGP support on DENT Devices, follow the steps below:
+If FRR is not already installed on your device, follow the instructions below
+to install FRR:
 
 ### Installation using APT:
 
