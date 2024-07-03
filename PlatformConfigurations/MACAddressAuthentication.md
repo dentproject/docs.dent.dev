@@ -4,7 +4,7 @@ parent: Platform Configuration
 nav_order: 6
 layout: default
 ---
- 
+
 # MAC Address Authentication
 
 ## Introduction

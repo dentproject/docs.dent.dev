@@ -3,7 +3,7 @@ title: IEEE 802.1x (Port Based Authentication)
 parent: Platform Configuration
 nav_order: 5
 layout: default
---- 
+---
 
 # IEEE 802.1x (Port Based Authentication)
 
