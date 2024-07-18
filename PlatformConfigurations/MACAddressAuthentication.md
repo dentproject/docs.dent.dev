@@ -347,4 +347,5 @@ root@localhost:/etc/freeradius/3.0/sites-available# freeradius -X
 
 **NOTE: The above was tested on a virtual machine**
 
-For other MAC Address Authentication configurations, visit the freeRADIUS wiki: [FreeRADIUS Wiki]https://wiki.freeradius.org/guide/mac-auth
+For other MAC Address Authentication configurations, visit the freeRADIUS wiki:
+[FreeRADIUS Wiki] (https://wiki.freeradius.org/guide/mac-auth)

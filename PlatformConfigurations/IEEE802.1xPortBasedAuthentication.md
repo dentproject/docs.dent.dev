@@ -12,31 +12,55 @@ layout: default
 In this guide, we will quickly explain what IEEE 802.1x (Port Based Authentication) is
 and give an example implementing it.
 
-IEEE 802.1x is a standard for port-based network access control that provides an authentication
-mechanism to devices wishing to join a LAN or WLAN. IEEE 802.1x uses the Extensible Authentication Protocol
-(EAP) to transmit authentication information over ethernet frameworks. The three main components
-include the **Supplicant, Authenticator, and Authentication Server**.
+Key to network security, IEEE 802.1x is a standard for port-based network
+access control that provides an authentication mechanism to devices interested in joining
+a LAN or WLAN. Over ethernet frameworks, IEEE 802.1x uses the
+Extensible Authentication Protocol (EAP) to transmit authentication information.
+Required components include the Supplicant, Authenticator, and Authentication Server.
+Essentially, this standard ensures secure network access by authenticating devices before they connect.
+LAN and WLAN connections benefit significantly from this robust authentication method.
+
+The following is a brief description of the three components:
 
 - **Supplicant**: The Supplicant is the device attempting to access the network. It is often the one that
   participates in the EAP transaction with the Authenticator.
 
-- **Authenticator**: The Authenticator is the network device that connects the supplicant to the network. It acts as the
+- **Authenticator**: The Authenticator is the network device that connects the Supplicant to the network. It acts as the
   access point for the Supplicant and controls the type of traffic flow between the Supplicant and
-  the network before and after authentication. The Authenticator sends
-  EAP requests to the Supplicant to identify a connecting device.
-  In IEEE 802.1x, this is also more broadly refered to as a Network Access Server.
+  the network before and after authentication.
+  In IEEE 802.1x, this is also more broadly referred to as a Network Access Server.
 
 - **Authentication Server**: The Authentication Server receives requests for network access
-  and verifies devices attempting to connect to the network. This information is then passed back to the authenticator
-  where traffic flow is changed based on the results. This is also commonly refered to as a RADIUS Server.
+  and verifies devices attempting to connect to the network. This information is then passed back to the Authenticator
+  where traffic flow is changed based on the results. This is also commonly referred to as a RADIUS Server.
   It is also often known as an AAA (Authentication, Authorization, and Accounting) Server.
+
+### Explanation of the protocol
 
 The image below is a good visualization of the 802.1x Progression.
 
 ![Seqeunce Diagram of the 802.1x Progression](../Images/ImagesForPlatformConfiguration/802.1x_Progression.png)
 
-In this document, we will be using the following free publicly available software:
-FreeRADIUS, hostapd, and wpa_supplicant to configure an example of IEEE 802.1x and MAC Address Authentication.
+1. New Connection: When a Supplicant connects for the first time to the Authenticator, the only protocol that the Supplicant can use is the Extensible Authentication Protocol (EAP). All other types of communication are blocked until the device is authenticated.
+   In order to begin the authentication process, the Supplicant must send an EAP-Start message to the Authenticator.
+2. EAP-Request Identity: The Authenticator will respond with an EAP-Request Identity message, asking the Supplicant to provide its identity (usually a username or other identifiable information).
+3. EAP-Response Identity: The Supplicant will then send an EAP-Response Identity message, which includes this identifiable information.
+4. RADIUS Access-Request: The Authenticator encapsulates the EAP-Response Identity message into a RADIUS Access-Request message and sends it to the Authentication Server (RADIUS server).
+5. EAP Authentication Methods: The Authentication Server processes the EAP-Response Identity message and determines which method to use for authentication (e.g., EAP-TLS, EAP-PEAP, EAP-TTLS, MAC).
+6. RADIUS Access-Challenge: The server then sends a RADIUS-Access Challenge message back to the Authenticator requesting more information to authenticate the client such as credentials, certificates, or other authentication data. This process may repeat several times as needed.
+7. EAP-Request: The Authenticator will forward the RADIUS-Access Challenge message to the Supplicant as an EAP-Request.
+8. EAP-Response: The Supplicant responds with an EAP-Response message, which includes credentials, certificates, or other authentication data, depending on the EAP method being used.
+9. RADIUS Access-Request: The Authenticator will take the EAP-Response message and send the data to the Authentication Server as a RADIUS Access-Request message.
+10. RADIUS Access-Accept/Reject: Once the RADIUS server has enough information to authenticate the client, it sends a RADIUS Access-Accept or Access-Reject message to the Authenticator. An Access-Accept message indicates successful authentication, while an Access-Reject message indicates failure.
+11. Network Access: If the Supplicant is successfully authenticated, the Authenticator grants network access to the client. If authentication fails, the Supplicant is denied access.
+
+In this document, we will be using the following free publicly available software
+FreeRADIUS, hostapd, and wpa_supplicant to configure an example of IEEE 802.1x.
+
+_In this guide, we will utilize the `freeradius` utility as the Authentication Server,
+while the `hostapd` utility serves as the Authenticator, and the
+`wpasupplicant` utility acts as the Supplicant.
+Together, these will facilitate the implementation of IEEE 802.1X._
 
 ## Example Configuration
 
@@ -44,23 +68,33 @@ Consider the following topology:
 
 ![IEEE-802.1x-Configuration](../Images/ImagesForPlatformConfiguration/IEEE-802.1x-ConfigurationExample.png)
 
-First, we will guide you through how to configure 802.1x and then
-show how to configure MAC Address Authentication
+This demo will detail how to configure a Supplicant, Authenticator
+and Authentication Server for 802.1x Authentication using EAP-TTLS.
+It will also briefly cover configuring the Authentication Server
+for other 802.1x authentication methods.
 
 ## Installations
+
+**For this demo, you will need to install three separate utilities on three devices:**
+
+1. On one device, install the `freeradius` utility. This device will act as the Authentication Server (FreeRADIUS-Server).
+2. On another device, install the `hostapd` utility. This device will act as the Authenticator.
+3. On the last device, install the `wpa_supplicant` utility. This device will act as the Supplicant.
+
+For information on how to install each utility, read below:
 
 _NOTE: Before any installation, do not forget to use `$ apt-get update` to fetch the latest version of your package lists. Follow this with the command `$ apt-get upgrade` to first review the changes in the latest versions and then replace the old packages by installing the new ones._
 
 ### FreeRADIUS Installation
 
-freeRADIUS is a free open source RADIUS server. It is commonly used by Internet Service Providers
+freeRADIUS is a free, open-source RADIUS server. It is commonly used by Internet Service Providers
 and Telecommunications companies.
 
-If freeRADIUS is not already installed on your device,
+If freeRADIUS is not already installed on the device that will act as the FreeRADIUS-Server
 install the `freeradius` utility with `$ apt-get install freeradius`
 
 For our example configuration, we will install `freeradius` by running
-the `$ apt-get install freeradius` command on the **FreeRADIUS-Server**.
+the `$ apt-get install freeradius` command on the device titled **FreeRADIUS-Server**.
 
 On the FreeRADIUS-Server:
 
@@ -70,13 +104,14 @@ root@localhost:~# apt-get install freeradius
 
 ### hostapd Installation
 
-hostapd (host acces point daemon) is a user space daemon software enabling a network interface card
+hostapd (host access point daemon) is a user space daemon software enabling a network interface card
 to act as an access point.
 
-If hostapd is not already installed on your device, install the `hostapd` utility with `$ apt-get install hostapd`
+If hostapd is not already installed on the device that will act as the DENT-Authenticator
+, install the `hostapd` utility with `$ apt-get install hostapd`
 
 For our example configuration, we will install `hostapd` by running
-the `$ apt-get install hostapd` command on the **DENT-Authenticator**.
+the `$ apt-get install hostapd` command on the device titled **DENT-Authenticator**.
 
 On the DENT-Authenticator:
 
@@ -91,10 +126,11 @@ and IEEE 802.1X supplicant. It implements WPA key negotiation
 with a WPA Authenticator and Extensible Authentication Protocol
 (EAP) authentication with an Authentication Server.
 
-If wpa_supplicant is not already installed on your device, install the `wpasupplicant` utility with `$ apt-get install wpa_supplicant`
+If wpa_supplicant is not already installed on the device that will act as the Supplicant,
+install the `wpasupplicant` utility with `$ apt-get install wpa_supplicant`
 
-For our example configuration, we will install`wpasupplicant` by running
-the command `$ apt-get install wpasupplicant` on the **Supplicant**.
+For our example configuration, we will install `wpasupplicant` by running
+the command `$ apt-get install wpasupplicant` on the device titled **Supplicant**.
 
 On the Supplicant:
 
@@ -102,32 +138,21 @@ On the Supplicant:
 root@localhost:~#  apt-get install wpasupplicant
 ```
 
-### iproute2 Package Update
+### Iproute2 Package Version
 
 Iproute2 Version 5.18 and beyond includes the bridge port lock feature discussed later in this guide.
-This is a key feature used in implementing IEEE 802.1x. If you do not have iproute2
-or the latest features available from the iproute2 package,
-please visit the appendix at the bottom for information on how to change to the latest version.
+This is a key feature used in implementing IEEE 802.1x. In this guide, we used iproute2-6.9.0.
+To install iproute2-6.9.0, please visit the appendix at the bottom.
 
-## Configurations
+## Setting up the Network
 
 Recall the network topology is:
 ![IEEE-802.1x-Configuration](../Images/ImagesForPlatformConfiguration/IEEE-802.1x-ConfigurationExample.png)
 
-### Establishing the network
-
 For this demo, we will establish the network by building the topology using
 the commands below.
 
-On the Supplicant:
-
-```
-ip address add 192.168.1.1 dev enp0s4
-ip link set dev enp0s4 up
-ip route add 192.168.1.0/24 dev enp0s4
-```
-
-On the DENT-Authenticator:
+First, on the DENT-Authenticator, run the following:
 
 ```
 ip link add name br0 type bridge
@@ -152,9 +177,9 @@ Together, these commands will drop incoming packets from sources not found in
 the DENT-Authenticator's Forwarding Data Base table (FDB). This excludes EAPOL frames, which
 will be used for authentication purposes. After authentication
 is complete, we will install a matching static FDB entry to allow traffic from authorized
-Supplicants to enter the bridge.
+Supplicants to enter the network.
 
-For more informaiton, read below:
+For more information on Bridge Port Configurations, read below:
 
 - `bridge link set dev enp0s4 flood off`: This command controls whether unicast traffic for which there is no FDB entry will
   be flooded. By default, this flag is on.
@@ -170,6 +195,16 @@ For more informaiton, read below:
   where hosts can authenticate themselves by exchanging
   EAPOL frames with the authenticator. By default, this flag is off.
 
+For the remaining devices, we will include the following:
+
+On the Supplicant:
+
+```
+ip address add 192.168.1.1 dev enp0s4
+ip link set dev enp0s4 up
+ip route add 192.168.1.0/24 dev enp0s4
+```
+
 On the FreeRADIUS-Server:
 
 ```
@@ -179,7 +214,8 @@ ip route add 192.168.1.0/24 dev enp0s5
 ```
 
 With the configuration above, traffic from the Supplicant will not
-able to reach the FreeRADIUS-Server.
+able to reach the FreeRADIUS-Server because the Authenticator is configured to filter out all
+packets except for EAP packets.
 
 On the Supplicant:
 
@@ -191,9 +227,13 @@ From 192.168.1.1 icmp_seq=2 Destination Host Unreachable
 From 192.168.1.1 icmp_seq=3 Destination Host Unreachable
 ```
 
-## Configuring freeRADIUS
+---
 
-### Creating Certificates
+## Establishing Authentication
+
+### Configuring the FreeRADIUS-Server
+
+#### **Creating Certificates**
 
 The freeradius package installs scripts and
 configuration files in the `/etc/freeradius/3.0/certs/` directory to create your own
@@ -235,7 +275,7 @@ commonName              = "Example Certificate Authority"
 ...
 ```
 
-3.  Customize the server configuration in the `/etc/freeradius/3.0/certs/server.cnf`:
+3. Customize the server configuration in the `/etc/freeradius/3.0/certs/server.cnf`:
 
 ```
 ...
@@ -286,14 +326,15 @@ commonName              = user@example.org
 On the FreeRADIUS-Server:
 
 ```
-root@localhost:~# make all
+root@localhost:/etc/freeradius/3.0/certs# make all
 ```
 
-Exchanging these certificates securely allows for many of the different authentication protocols available.
+**Exchanging these certificates securely allows for many of the different authentication protocols available.**
 
-### Configuring EAP
+#### **Configuring EAP**
 
-Freeradius supports many different methods of Extensible Authentication Protocol. A few include:
+Freeradius supports many different methods of Extensible Authentication Protocol. A few TLS-based EAP types
+include:
 
 - **EAP-TLS** (transport layer security) uses a secure TLS connection to authenticate
   clients by using certificates. To use EAP-TLS, you need TLS client certificates for each
@@ -308,27 +349,45 @@ Freeradius supports many different methods of Extensible Authentication Protocol
 
 - **EAP-PEAP** (protected extensible authentication protocol) uses a secure TLS connection
   as the outer authentication protocol to set up the tunnel. The authenticator authenticates
-  the certificate of the RADIUS server. Afterwards, the supplicant authenticates through the
+  the certificate of the RADIUS server. Afterward, the Supplicant authenticates through the
   encrypted tunnel by using Microsoft challenge handshake authentication protocol version 2
   (MS-CHAPv2) or other methods.
 
-To configure the type of EAP to use, edit the `/etc/freeradius/3.0/mods-available/eap` file:
+To configure from the above the type of EAP to use, edit the `/etc/freeradius/3.0/mods-available/eap` file:
 
-Set the password of the private key in the `private_key_password` parameter:
+Depending on your environment,
+set the `default_eap_type` parameter in the eap directive to the primary `EAP_type` you want to use:
 
 ```
 eap {
 ...
-  tls-config tls-common {
+  default_eap_type = EAP_type
 ...
-    private_key_password = key_password
-...
-  }
 }
 ```
 
-For our configuration demo, we will use "whatever" from the default certificate configuraiton
-as the `key_password`:
+For this configuration demo, we will use `ttls`:
+
+On the FreeRADIUS-Server:
+
+```
+eap {
+...
+  default_eap_type = ttls
+...
+}
+```
+
+To specify the `private_key_password` parameter needed to decrypt TLS operations change
+`private_key_password` to reflect the `input_password` and `output_password`
+defined in the user's configuration of `/etc/freeradius/3.0/certs/server.cnf`.
+For our configuration demo, we will leave the `private_key_password`
+unchanged in the `/etc/freeradius/3.0/mods-available/eap` file.
+By default, the `private_key_password is "whatever"
+
+**NOTE: "whatever" is also the default `input_password` and `output_password`
+defined in the user's configuration of `/etc/freeradius/3.0/certs/server.cnf`.
+This default string should only be used for testing purposes.**
 
 On the FreeRADIUS-Server:
 
@@ -343,31 +402,8 @@ eap {
 }
 ```
 
-Next, depending on your environment,
-set the `default_eap_type` parameter in the eap directive to the primary `EAP_type` you want to use:
-
-```
-eap {
-...
-  default_eap_type = EAP_type
-...
-}
-```
-
-For our configuration demo, we will use `ttls`:
-
-On the FreeRADIUS-Server:
-
-```
-eap {
-...
-  default_eap_type = ttls
-...
-}
-```
-
-To leave only EAP enabled for the outer authentication and disable plain-text authentication methods
-edit the `/etc/raddb/sites-available/default file`, and comment out all authentication methods other than eap.
+Next, to leave only EAP enabled for the outer authentication and disable plain-text authentication methods
+edit `/etc/freeradius/3.0/sites-available/default`, and comment out all authentication methods other than eap.
 
 On the FreeRADIUS-Server:
 
@@ -393,7 +429,7 @@ authenticate {
 }
 ```
 
-Next, to specify if other hosts should be able to access the free RADIUS service, such as an Authenticator
+Finally, to specify if other hosts should be able to access the free RADIUS service, such as an Authenticator
 edit the `/etc/freeradius/3.0/clients.conf` file and use the following template:
 
 ```
@@ -414,7 +450,7 @@ client DENT-Authenticator {
 }
 ```
 
-If you plan to use EAP-TTLS or EAP-PEAP, be sure to also add the users to the `/etc/raddb/users file`:
+For EAP-TTLS and EAP-PEAP, be sure to also add the users to the `/etc/freeradius/3.0/users file`:
 
 ```
 example_user        Cleartext-Password := "user_password"
@@ -428,7 +464,7 @@ On the FreeRADIUS-Server:
 Supplicant       Cleartext-Password := "password"
 ```
 
-For users who intend to use certificate-based authentication (EAP-TLS), do not add any entry.
+Users who intend to use certificate-based authentication (EAP-TLS), do not add an entry.
 
 To verify the configuration files run `freeradius -XC`.
 
@@ -445,14 +481,16 @@ Configuration appears to be OK
 _NOTE: If port 1812 is said to already be in use, try restarting the freeradius service with
 `systemctl stop freeradius` then `freeradius -X`_
 
-### Configuring hostapd
+### Configuring the Authenticator
 
-The host access point daemon (hostapd) service is useful tool
-for acting as an authenticator in a wired network. Upon configuration `hostapd_cli`
+#### **Creating hostapd.conf**
+
+The hostapd utility will be used as the authenticator for this example demo.
+Upon configuration, `hostapd_cli`
 can be used to track when different events occur (such as successful authentication)
 and run commands to give access to the Supplicant.
 While the hostapd service provides an integrated RADIUS server,
-due to its limited functionality, we will use the FreeRADIUS server to authenticate individuals.
+due to its limited functionality, we will use the FreeRADIUS server to authenticate individuals instead.
 
 After installing `hostapd` you must configure a hostapd.conf file in `/etc/hostapd/hostapd.conf` to set up
 hostapd. If it does not exist, add one.
@@ -536,11 +574,8 @@ use_pae_group_addr=1
 ctrl_interface=/var/run/hostapd/
 ctrl_interface_group=0
 
-###### RADIUS configuration #####
-## For IEEE 802.1X with external Authentication Server, IEEE 802.11
-## authentication with external ACL for MAC addresses, and accounting
-
-## RADIUS authentication server
+# RADIUS client configuration
+# ===========================
 
 auth_server_addr=192.168.1.3
 auth_server_port=1812
@@ -581,7 +616,7 @@ enp0s4: Setup of interface done.
 Using existing control interface directory.
 ```
 
-### Blocking and Allowing Traffic based on hostapd_cli
+#### **Blocking and Allowing Traffic based on hostapd_cli**
 
 The bridge port configurations we added earlier blocks all traffic on the listening port
 of the hostapd except extensible authentication protocol over LAN (EAPOL) packets.
@@ -634,14 +669,22 @@ To run the `hostapd_cli` with this event script use:
 $ hostapd_cli -i enp0s4 -a /usr/local/bin/802-1x-tr-mgmt
 ```
 
+**NOTE: Ensure that the file `/usr/local/bin/802-1x-tr-mgmt` has the executable permission set.
+You can check the permissions with the ls -l command.
+If the file is not executable, you can add the executable permission with the chmod command:
+`$ sudo chmod +x /usr/local/bin/802-1x-tr-mgmt`**
+
+#### **Creating a System Service**
+
 A system service can also be created to support the implementation like the example below.
-NOTE: The <MAC ADDRESS OF Supplicant> should be configured to reflect the MAC ADDRESS of the Supplicant
-that you wish to add to the FDB and that will be permitted to flow traffic.
+
+NOTE: The `<MAC ADDRESS Of Supplicant>` should be configured to reflect the MAC ADDRESS of the Supplicant
+that you wish to add to the FDB and that will be permitted to access the network.
 
 On the DENT-Authenticator:
 
 ```
-root@localhost:/etc/hostapd# cat /etc/systemd/system/802-1x-tr-mgmt. service
+root@localhost:/etc/hostapd# cat /etc/systemd/system/802-1x-tr-mgmt.service
 [Unit]
 Description= Service for Bridges Example 802.1x traffic
 #After=hostapd.service
@@ -651,7 +694,7 @@ Description= Service for Bridges Example 802.1x traffic
 Type=simple
 ExecStartPre=/bin/echo "Running Pre Start"
 ExecStartPre=/bin/echo "Restricting Acces"
-ExecStartPre=-/sbin/bridge fdb del <MAC ADDRESS OF Supplicant> dev enp0s4 static master
+ExecStartPre=-/sbin/bridge fdb del <MAC ADDRESS Of Supplicant> dev enp0s4 static master
 ExecStartPre=/sbin/bridge link set dev enp0s4 flood off
 ExecStartPre=/sbin/bridge link set dev enp0s4 learning off
 ExecStart=/sbin/bridge link set dev enp0s4 locked on
@@ -660,7 +703,7 @@ ExecStart=- hostapd_cli -i enp0s4 -a /usr/local/bin/802-1x-tr-mgmt
 
 ExecStopPost=/bin/echo "Running Stop Post"
 ExecStopPost=/bin/echo "Letting Traffic Through"
-ExecStopPost=-/sbin/bridge fdb add <MAC ADDRESS OF Supplicant> dev enp0s4 static master
+ExecStopPost=-/sbin/bridge fdb add <MAC ADDRESS Of Supplicant> dev enp0s4 static master
 ExecStopPost=/sbin/bridge link set dev enp0s4 flooding on
 ExecStopPost=/sbin/bridge link set dev enp0s4 leanring on
 ExecStopPost=/sbin/bridge link set dev enp0s4 locked off
@@ -683,10 +726,12 @@ systemctl status 802-1x-tr-mgmt.service
 With the hostapd configuration completed, connecting a wpa_supplicant to the hostapd Access Point will now
 authenticate the user based on the FreeRADIUS-Server configurations.
 
-### Configuring wpa_supplicant
+### Configuring the Supplicant
+
+#### **Creating wpa_supplicant.conf**
 
 To test authentication using EAP over tunneled transport layer security (TTLS) works as expected we will configure
-an example `wpa_supplicant` on the Supplicant device at `/etc/wpa_supplicant/wpa_supplicant-TTLS.conf`
+a Supplicant using `wpa_supplicant` and add a `.conf` file at `/etc/wpa_supplicant/wpa_supplicant-TTLS.conf`
 
 On the Supplicant:
 
@@ -718,29 +763,37 @@ Analysis:
 - The `identity` should match the name given as our Cleartext example in the users file of the FreeRADIUS-Server.
 - The `password` should match the password given as our Cleartext example in the users file of the FreeRADIUS-Server.
 
-**NOTE: In accordance with EAP-TTLS for authentication with the
+**NOTE: In accordance with EAP-TTLS for authentication with a
 FreeRADIUS-Server, the Supplicant needs to verify the authority of
-the FreeRADIUS server. In order to do this, the client Supplicant needs to have a copy
+the FreeRADIUS Server. In order to do this, the Supplicant needs to have a copy
 of the Certificate Authority (CA) certificate (ca_cert) that signed
-the FreeRADIUS server’s certificate. In our example this was placed at `/etc/pki/tls/certs/ca.pem`
-Use any form of file transfer **
+the FreeRADIUS Server’s certificate. Use any form of secure file transfer to ensure
+the Supplicant has a copy of the Certificate Authority (CA) certificate (ca_cert) that signed
+the FreeRADIUS Server’s certificate. If you do not currently have certificates signed by a trusted CA
+you may use the `ssl-cert-snakeoil.pem` certificate included with the server
+in `etc/freeradius/3.0/mods-available/eap`. These test certificates SHOULD NOT be used in a normal
+deployment. They are created only to make it easier to install
+the server, and to perform simple tests**
 
-For more example configurations visit: [WPA_supplicant Example Configs Page](https://www.systutorials.com/docs/linux/man/5-wpa_supplicant.conf/)
+In our example we placed a copy
+of the Certificate Authority (CA) certificate (ca_cert) that signed
+the FreeRADIUS Server’s certificate at `/etc/pki/tls/certs/ca.pem`
 
-To test the authenticator, simply use the following command:
+To authenticate the Supplicant, simply use the following command:
 
 ```
 $ sudo wpa_supplicant -c /etc/wpa_supplicant/wpa_supplicant-TTLS.conf -D wired -i enp0s4
 ```
 
 For more information on WPA_supplicant visit the man page: [WPA_supplicant MAN Page](https://www.linux.org/docs/man5/wpa_supplicant.html)
+For more example configurations visit: [WPA_supplicant Example Configs Page](https://www.systutorials.com/docs/linux/man/5-wpa_supplicant.conf/)
 
 ### Testing 802.1x Authentication
 
 Now that the devices are configured, we can test
-the authentication of the Supplicant into the network.
+the authentication of the Supplicant on the network.
 
-On the FreeRADIUS-Server start the freeRADIUS with the `freeradius` -X command:
+On the FreeRADIUS-Server start the freeRADIUS with the `freeradius -X` command:
 
 ```
 root@localhost:~# freeradius -X
@@ -752,7 +805,7 @@ Listening on proxy address :: port 51599
 Ready to process requests
 ```
 
-On the DENT-Authenticator open an access point by running the `hostapd.conf` file:
+On the DENT-Authenticator, open an access point by running the `hostapd.conf` file:
 
 ```
 root@localhost:~# hostapd /etc/hostapd/hostapd.conf -B -d
@@ -785,6 +838,7 @@ The output should resemble:
 Jul 01 23:02:55 localhost echo[3396]: Restricting Acces
 Jul 01 23:02:55 localhost systemd[1]: Started Service for Bridges Example 802.1x
 root@localhost:~#  hostapd_cli -i enp0s4 -a /usr/local/bin/802-1x-tr-mgmt
+
 ```
 
 On the Supplicant test the authentication with `wpa_supplicant`:
@@ -829,18 +883,27 @@ PING 192.168.1.3 (192.168.1.3) 56(84) bytes of data.
 
 ### Appendix
 
-#### Iproute2 Update
+#### **Iproute2 Version**
 
-For our example configuration, we switched to iproute2-6.9.0.
-by downloading the latest version from GitHub.
+For our example configuration, we used iproute2-6.9.0.
 
-On the DENT-Authenticator:
+To download a specific iproute2 version you may `wget` packages
+from the [mirrors.kernel.org](https://mirrors.kernel.org) website
+provided by the Linux Kernel Archives.
+
+On the DENT-Authenticator use the following to get iproute2-6.9.0:
 
 ```
-root@localhost:~#  curl -LO https://github.com/iproute2/iproute2/archive/master.zip
+root@localhost:~#  wget https://mirrors.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.9.0.tar.gz
 ```
 
-After unziping the file, we then installed the supporting utilities `bison` and
+Next extract the contents of the compressed tarball file with:
+
+```
+root@localhost:~#  tar -xvf iproute2-6.9.0.tar.gz
+```
+
+To make the package install the supporting utilities `bison` and
 `flex` with `apt install bison` and `apt install flex`:
 
 ```
@@ -865,7 +928,7 @@ root@localhost:
 ```
 
 Finally, `cd` into the new `iproute2-main` directory and
-install this iproute2 version with:
+make this iproute2 version with:
 
 ```
 root@localhost:~/iproute2-main# make install
